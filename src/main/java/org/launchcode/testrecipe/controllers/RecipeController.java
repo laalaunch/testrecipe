@@ -26,8 +26,8 @@ public class RecipeController {
     }
 
     @GetMapping("/list")
-    public List<Recipe> findAll() {
-        return recipeDAO.findAll();
+    public List<Recipe> findAll(@RequestParam Optional<String> name) {
+        return recipeDAO.findByName(name.orElse("_"));
     }
 
     @RequestMapping(value = "recipes")
