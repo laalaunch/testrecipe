@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8 "/>
+    <title>List</title>
+
+    <!-- Stylesheets -->
+    <link th:href="@{/css/testRecipe.css}" rel="stylesheet" />
+
+    <title th:text="'testrecipe' + ${title == null ? '' : ' :: ' + title}">Test Recipe</title>
+</head>
+<body>
+
+    <p>This is the list.html file</p>
+
+<div class="container body-content">
+    <h1 th:text="${#strings.capitalizeWords(title)}"></h1>
+    <h2 class = "centered">View Recipes By Category</h2>
+</div>
+
+<table class="centeredTable">
+    <tr>
+        <th>All</th>
+        <th>Recipe</th>
+        <th>Time</th>
+        <th>Servings</th>
+    </tr>
+
+    <tr>
+        <td>
+            <li>
+                <a th:href="@{/list/recipes(column='All',value='View All')}">View All</a>
+            </li>
+        </td>
+        <td>
+            <li th:each="recipe : ${recipes}">
+                <a th:href="@{/list/recipes(column=name,value=${recipe.name})}" th:text="${recipe.name}"></a>
+            </li>
+        </td>
+        <td>
+            <li th:each="recipe : ${recipes}">
+                <a th:href="@{/list/recipes(column=time,value=${recipe.time})}" th:text="${recipe.time}"></a>
+            </li>
+        </td>
+        <td>
+            <li th:each="recipe : ${recipes}">
+                <a th:href="@{/list/recipes(column=servings,value=${recipe.servings})}" th:text="${recipe.servings}"></a>
+            </li>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

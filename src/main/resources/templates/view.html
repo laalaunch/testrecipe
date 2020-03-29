@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8 "/>
+    <title>View Recipe</title>
+
+    <!-- Stylesheets -->
+    <link th:href="@{/css/testRecipe.css}" rel="stylesheet" />
+
+</head>
+
+<body class="container  body-content">
+
+    <h1 th:text="${'Recipe: ' + recipe.name}">Default Title</h1>
+    <p>This is the view.html</p>
+    <div class="recipe-listing">
+        <p th:text="${'ID: ' + recipe.id}"></p>
+        <p th:text="${'Name: ' + recipe.name}"></p>
+        <p th:text="${'Time: ' + recipe.time}"></p>
+        <p th:text="${'Servings: ' + recipe.servings}"></p>
+        <p th:text="${'Steps: ' + recipe.directions}"></p>
+
+    </div>
+
+</body>
+</html>
