@@ -3,7 +3,11 @@ package org.launchcode.testrecipe.controllers;
 import org.launchcode.testrecipe.dao.RecipeDAO;
 import org.launchcode.testrecipe.model.Recipe;
 import org.launchcode.testrecipe.model.RecipeData;
+import org.launchcode.testrecipe.model.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +20,10 @@ import java.util.Optional;
 public class RecipeController {
 
     @Autowired
-    private RecipeDAO recipeDAO;
+    RecipeService recipeService;
+
+    @Autowired
+    RecipeDAO recipeDAO;
 
     static HashMap<String, String> columnChoices = new HashMap<>();
 
@@ -25,9 +32,10 @@ public class RecipeController {
         columnChoices.put("all", "All");
     }
 
-    @GetMapping("/list")
-    public List<Recipe> findAll(@RequestParam Optional<String> name) {
-        return recipeDAO.findByName(name.orElse("_"));
+    @RequestMapping("")
+    public String list(Model model) {
+        model.addAttribute("recipes", recipeDAO.findAll());
+        return "list";
     }
 
     @RequestMapping(value = "recipes")
@@ -47,13 +55,18 @@ public class RecipeController {
 
     @GetMapping("view/{recipeId}")
     public String displayViewRecipe(Model model, @PathVariable int recipeId){
-        Optional optRecipe = recipeDAO.findById(recipeId);;
+        Optional<Recipe> optRecipe = recipeDAO.findById(recipeId);
         if (optRecipe.isPresent()) {
-            Recipe recipe = (Recipe) optRecipe.get();
+            Recipe recipe = optRecipe.get();
             model.addAttribute("recipe", recipe);
             return "view";
         } else {
             return "redirect:../";
         }
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public Page<Recipe> fetchByPage(Pageable page) {
+        return this.recipeService.findAllByPage(page);
     }
 }
